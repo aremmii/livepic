@@ -32,7 +32,6 @@ public class PhotoListManager {
     public void setDao(PhotoItemCollectionDao dao) {
         this.dao = dao;
         //Save to Persistent Storage
-
     }
 
     public void insertDaoAtTopPosition(PhotoItemCollectionDao newDao) {
@@ -42,8 +41,6 @@ public class PhotoListManager {
             dao.setData(new ArrayList<PhotoItemDao>());
 
         dao.getData().addAll(0, newDao.getData());
-
-
     }
 
     public void appendDaoAtBottomPosition(PhotoItemCollectionDao newDao) {

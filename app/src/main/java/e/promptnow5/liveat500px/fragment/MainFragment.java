@@ -1,9 +1,11 @@
 package e.promptnow5.liveat500px.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,12 +117,13 @@ public class MainFragment extends Fragment {
         // Init 'View' instance(s) with rootView.findViewById here
         listView = (ListView) rootView.findViewById(R.id.listView);
         listAdapter = new PhotoListAdapter(lastPositionInteger);
-        listAdapter.setDao(photoListManager.getDao());
         listView.setAdapter(listAdapter);
-        listView.setOnItemClickListener(listViewItemClickListener);
 
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(pullToRefreshListener);
+
+        listAdapter.setDao(photoListManager.getDao());
+        listView.setOnItemClickListener(listViewItemClickListener);
         listView.setOnScrollListener(onScrollListener);
 
         if (savedInstanceState == null) {
@@ -288,13 +291,13 @@ public class MainFragment extends Fragment {
 
                 if (mode == MODE_RELOAD_NEWER) {
                     photoListManager.insertDaoAtTopPosition(dao);
-                    showToast("Load Completed");
                 } else if (mode == MODE_LOAD_MORE) {
                     photoListManager.appendDaoAtBottomPosition(dao);
                 } else {
                     photoListManager.setDao(dao);
                 }
                 clearLoadMoreFlagIfCapable(mode);
+                showToast("Load Completed");
                 listAdapter.setDao(photoListManager.getDao());
                 listAdapter.notifyDataSetChanged();
 
@@ -313,6 +316,7 @@ public class MainFragment extends Fragment {
                 showToast("Load Completed");
 
             } else {
+//                swipeRefreshLayout.setRefreshing(false);
                 clearLoadMoreFlagIfCapable(mode);
                 try {
                     showToast(response.errorBody().string());
@@ -324,8 +328,8 @@ public class MainFragment extends Fragment {
 
         @Override
         public void onFailure(Call<PhotoItemCollectionDao> call, Throwable t) {
-            clearLoadMoreFlagIfCapable(mode);
             swipeRefreshLayout.setRefreshing(false);
+            clearLoadMoreFlagIfCapable(mode);
             showToast(t.toString());
         }
 
@@ -334,6 +338,4 @@ public class MainFragment extends Fragment {
                 isLoadingMore = false;
         }
     }
-
-
 }
