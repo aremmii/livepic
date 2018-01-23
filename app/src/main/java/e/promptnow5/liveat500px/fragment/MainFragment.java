@@ -117,7 +117,7 @@ public class MainFragment extends Fragment {
         listAdapter = new PhotoListAdapter(lastPositionInteger);
         listAdapter.setDao(photoListManager.getDao());
         listView.setAdapter(listAdapter);
-        listView.setOnItemClickListener(listViewItenClickListeber);
+        listView.setOnItemClickListener(listViewItemClickListener);
 
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(pullToRefreshListener);
@@ -249,7 +249,7 @@ public class MainFragment extends Fragment {
         }
     };
 
-    final AdapterView.OnItemClickListener listViewItenClickListeber = new AdapterView.OnItemClickListener() {
+    final AdapterView.OnItemClickListener listViewItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (position < photoListManager.getCount()) {

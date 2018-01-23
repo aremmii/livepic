@@ -14,7 +14,7 @@ import e.promptnow5.liveat500px.R;
 import e.promptnow5.liveat500px.dao.PhotoItemDao;
 import e.promptnow5.liveat500px.fragment.MainFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainFragment.FragmentListener{
 
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
@@ -67,6 +67,13 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPhotoItemClicked(PhotoItemDao dao) {
+        Intent intent = new Intent(MainActivity.this,
+                MoreInfoActivity.class);
+        startActivity(intent);
     }
 
 }
