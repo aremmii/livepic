@@ -26,6 +26,10 @@
             android:name="e.promptnow5.liveat500px.configuration.GlideConfiguration"
             android:value="GlideModule" />
 
+        <activity android:name=".activity.MoreInfoActivity"
+            android:theme="@style/AppThemeWithActionBar">
+
+        </activity>
     </application>
 
 </manifest>
