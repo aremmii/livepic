@@ -63,14 +63,15 @@ public class PhotoListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (position == getCount() - 1) {
-            ProgressBar item;
+            ProgressBar i;
             if (convertView != null) {
-                item = (ProgressBar) convertView;
+                i = (ProgressBar) convertView;
             } else {
-                item = new ProgressBar(parent.getContext());
+                i = new ProgressBar(parent.getContext());
             }
-            return item;
+            return i;
         }
+
         PhotoListItem item;
 
         if (convertView != null) {

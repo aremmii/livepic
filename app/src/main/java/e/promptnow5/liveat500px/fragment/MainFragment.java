@@ -141,6 +141,7 @@ public class MainFragment extends Fragment {
 
     private void reloadDataNewer() {
         int maxId = photoListManager.getMaximumId();
+
         Call<PhotoItemCollectionDao> call = HttpManager.getInstance().getService().loadPhotoListAfterId(maxId);
         call.enqueue(new PhotoListLoadCallback(PhotoListLoadCallback.MODE_RELOAD_NEWER));
     }
@@ -189,17 +190,21 @@ public class MainFragment extends Fragment {
     }
 
     private void showButtonNewPhoto() {
-        btnNewPhoto.setVisibility(View.VISIBLE);
-        Animation anim = AnimationUtils.loadAnimation(Contextor.getInstance().getContext(),
-                R.anim.zoom_fade_in);
-        btnNewPhoto.startAnimation(anim);
+        if (btnNewPhoto.getVisibility() == View.GONE) {
+            btnNewPhoto.setVisibility(View.VISIBLE);
+            Animation anim = AnimationUtils.loadAnimation(Contextor.getInstance().getContext(),
+                    R.anim.zoom_fade_in);
+            btnNewPhoto.startAnimation(anim);
+        }
     }
 
     private void hideButtonNewPhoto() {
-        btnNewPhoto.setVisibility(View.GONE);
-        Animation anim = AnimationUtils.loadAnimation(Contextor.getInstance().getContext(),
-                R.anim.zoom_fade_out);
-        btnNewPhoto.startAnimation(anim);
+        if (btnNewPhoto.getVisibility() == View.VISIBLE) {
+            btnNewPhoto.setVisibility(View.GONE);
+            Animation anim = AnimationUtils.loadAnimation(Contextor.getInstance().getContext(),
+                    R.anim.zoom_fade_out);
+            btnNewPhoto.startAnimation(anim);
+        }
     }
 
     private void showToast(String text) {
@@ -219,7 +224,6 @@ public class MainFragment extends Fragment {
                 listView.smoothScrollToPosition(0);
                 hideButtonNewPhoto();
             }
-
         }
     };
 
@@ -230,16 +234,20 @@ public class MainFragment extends Fragment {
         }
 
         @Override
-        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        public void onScroll(AbsListView view,
+                             int firstVisibleItem,
+                             int visibleItemCount,
+                             int totalItemCount) {
             if (view == listView) {
+                if (listView.getFirstVisiblePosition() == 0) {
+                    hideButtonNewPhoto();
+                }
                 swipeRefreshLayout.setEnabled(firstVisibleItem == 0);
-
                 if (firstVisibleItem + visibleItemCount >= totalItemCount) {
                     if (photoListManager.getCount() > 0) {
                         //Load More
                         loadMoreData();
                     }
-
                 }
             }
         }
@@ -284,15 +292,14 @@ public class MainFragment extends Fragment {
             swipeRefreshLayout.setRefreshing(false);
             if (response.isSuccessful()) {
                 PhotoItemCollectionDao dao = response.body();
-
                 int firstVisblePosition = listView.getFirstVisiblePosition();
                 View c = listView.getChildAt(0);
                 int top = c == null ? 0 : c.getTop();
 
                 if (mode == MODE_RELOAD_NEWER) {
-                    photoListManager.insertDaoAtTopPosition(dao);
+                    photoListManager.insertDaoAtTopPosition(photoListManager.getDao());
                 } else if (mode == MODE_LOAD_MORE) {
-                    photoListManager.appendDaoAtBottomPosition(dao);
+                    photoListManager.appendDaoAtBottomPosition(photoListManager.getDao());
                 } else {
                     photoListManager.setDao(dao);
                 }
