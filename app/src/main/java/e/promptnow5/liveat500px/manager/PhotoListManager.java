@@ -3,13 +3,16 @@ package e.promptnow5.liveat500px.manager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import e.promptnow5.liveat500px.dao.PhotoItemCollectionDao;
 import e.promptnow5.liveat500px.dao.PhotoItemDao;
+import e.promptnow5.liveat500px.view.PhotoListItem;
 
 /**
  * Created by nuuneoi on 11/16/2014.
@@ -18,6 +21,8 @@ public class PhotoListManager {
 
     private Context mContext;
     private PhotoItemCollectionDao dao;
+
+    int maxId, minId;
 
     public PhotoListManager() {
         mContext = Contextor.getInstance().getContext();
@@ -42,7 +47,6 @@ public class PhotoListManager {
             dao.setData(new ArrayList<PhotoItemDao>());
 
         dao.getData().addAll(0, newDao.getData());
-//        dao.getData().addAll(0, newDao.getData());
 //        saveCache();
     }
 
@@ -64,8 +68,6 @@ public class PhotoListManager {
         if (dao.getData().size() == 0)
             return 0;
 
-        int maxId = dao.getData().get(0).getId();
-
         for (int i = 1; i < dao.getData().size(); i++) {
             maxId = Math.max(maxId, dao.getData().get(i).getId());
         }
@@ -79,8 +81,6 @@ public class PhotoListManager {
             return 0;
         if (dao.getData().size() == 0)
             return 0;
-
-        int minId = dao.getData().get(0).getId();
 
         for (int i = 1; i < dao.getData().size(); i++)
             minId = Math.min(minId, dao.getData().get(i).getId());

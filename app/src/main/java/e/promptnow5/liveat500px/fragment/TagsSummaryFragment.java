@@ -3,28 +3,22 @@ package e.promptnow5.liveat500px.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import e.promptnow5.liveat500px.R;
 
 @SuppressWarnings("unused")
-public class MoreInfoFragment extends Fragment {
+public class TagsSummaryFragment extends Fragment {
 
-    ViewPager viewPager;
-
-    public MoreInfoFragment() {
+    public TagsSummaryFragment() {
         super();
     }
 
     @SuppressWarnings("unused")
-    public static MoreInfoFragment newInstance() {
-        MoreInfoFragment fragment = new MoreInfoFragment();
+    public static TagsSummaryFragment newInstance() {
+        TagsSummaryFragment fragment = new TagsSummaryFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -42,7 +36,7 @@ public class MoreInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_more_info, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_tags_summary, container, false);
         initInstances(rootView, savedInstanceState);
         return rootView;
     }
@@ -54,27 +48,6 @@ public class MoreInfoFragment extends Fragment {
     @SuppressWarnings("UnusedParameters")
     private void initInstances(View rootView, Bundle savedInstanceState) {
         // Init 'View' instance(s) with rootView.findViewById here
-        viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
-        viewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
-                switch (position) {
-                    case 0:
-                        return PhotoSummaryFragment.newInstance();
-                    case 1:
-                        return InfoSummaryFragment.newInstance();
-                    case 2:
-                        return TagsSummaryFragment.newInstance();
-                    default:
-                        return null;
-                }
-            }
-
-            @Override
-            public int getCount() {
-                return 3;
-            }
-        });
     }
 
     @Override

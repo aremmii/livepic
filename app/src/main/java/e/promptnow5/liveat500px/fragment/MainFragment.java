@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import e.promptnow5.liveat500px.R;
 import e.promptnow5.liveat500px.adapter.PhotoListAdapter;
@@ -116,19 +117,22 @@ public class MainFragment extends Fragment {
 
         // Init 'View' instance(s) with rootView.findViewById here
         listView = (ListView) rootView.findViewById(R.id.listView);
+
         listAdapter = new PhotoListAdapter(lastPositionInteger);
+        listAdapter.setDao(photoListManager.getDao());
+
         listView.setAdapter(listAdapter);
+        listView.setOnItemClickListener(listViewItemClickListener);
 
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(pullToRefreshListener);
 
-        listAdapter.setDao(photoListManager.getDao());
-        listView.setOnItemClickListener(listViewItemClickListener);
         listView.setOnScrollListener(onScrollListener);
 
         if (savedInstanceState == null) {
             refreshData();
         }
+
     }
 
     private void refreshData() {
@@ -141,7 +145,6 @@ public class MainFragment extends Fragment {
 
     private void reloadDataNewer() {
         int maxId = photoListManager.getMaximumId();
-
         Call<PhotoItemCollectionDao> call = HttpManager.getInstance().getService().loadPhotoListAfterId(maxId);
         call.enqueue(new PhotoListLoadCallback(PhotoListLoadCallback.MODE_RELOAD_NEWER));
     }
@@ -277,13 +280,13 @@ public class MainFragment extends Fragment {
 
     class PhotoListLoadCallback implements Callback<PhotoItemCollectionDao> {
 
-        public static final int MODE_RELOAD = 1;
-        public static final int MODE_RELOAD_NEWER = 2;
-        public static final int MODE_LOAD_MORE = 3;
+        private static final int MODE_RELOAD = 1;
+        private static final int MODE_RELOAD_NEWER = 2;
+        private static final int MODE_LOAD_MORE = 3;
 
         int mode;
 
-        public PhotoListLoadCallback(int mode) {
+        private PhotoListLoadCallback(int mode) {
             this.mode = mode;
         }
 
@@ -310,14 +313,17 @@ public class MainFragment extends Fragment {
 
                 if (mode == MODE_RELOAD_NEWER) {
                     //Maintain Scroll Position
-                    int additionalSize = (dao != null && dao.getData() != null) ? dao.getData().size() : 0;
+                    int additionalSize;
+                    if (dao != null && dao.getData() != null) {
+                        additionalSize = dao.getData().size();
+                    } else {
+                        additionalSize = 0;
+                    }
                     listAdapter.increaseLastPosition(additionalSize);
                     listView.setSelectionFromTop(firstVisblePosition + additionalSize,
                             top);
                     if (additionalSize > 0)
                         showButtonNewPhoto();
-                } else {
-
                 }
 
                 showToast("Load Completed");
