@@ -148,6 +148,7 @@ public class MainFragment extends Fragment {
     private void reloadData() {
         Call<PhotoItemCollectionDao> call = HttpManager.getInstance().getService().loadPhotoList();
         call.enqueue(new PhotoListLoadCallback(PhotoListLoadCallback.MODE_RELOAD));
+
     }
 
     private void loadMoreData() {
