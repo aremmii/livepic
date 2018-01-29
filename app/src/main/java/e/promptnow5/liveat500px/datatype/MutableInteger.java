@@ -14,9 +14,8 @@ public class MutableInteger {
         return value;
     }
 
-    public MutableInteger setValue(int value) {
+    public void setValue(int value) {
         this.value = value;
-        return this;
     }
 
     public Bundle onSaveInstanceSate() {

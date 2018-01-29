@@ -51,7 +51,7 @@ public class PhotoItemDao implements Parcelable {
 
     }
 
-    protected PhotoItemDao(Parcel in) {
+    private PhotoItemDao(Parcel in) {
         id = in.readInt();
         link = in.readString();
         imageUrl = in.readString();
@@ -107,134 +107,119 @@ public class PhotoItemDao implements Parcelable {
         return id;
     }
 
-    public PhotoItemDao setId(int id) {
+    public void setId(int id) {
         this.id = id;
-        return this;
     }
 
     public String getLink() {
         return link;
     }
 
-    public PhotoItemDao setLink(String link) {
+    public void setLink(String link) {
         this.link = link;
-        return this;
     }
 
     public String getImageUrl() {
         return imageUrl;
     }
 
-    public PhotoItemDao setImageUrl(String imageUrl) {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-        return this;
     }
 
     public String getCaption() {
         return caption;
     }
 
-    public PhotoItemDao setCaption(String caption) {
+    public void setCaption(String caption) {
         this.caption = caption;
-        return this;
     }
 
     public int getUserId() {
         return userId;
     }
 
-    public PhotoItemDao setUserId(int userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
-        return this;
     }
 
     public String getUserName() {
         return userName;
     }
 
-    public PhotoItemDao setUserName(String userName) {
+    public void setUserName(String userName) {
         this.userName = userName;
-        return this;
     }
 
     public String getProfilePicture() {
         return profilePicture;
     }
 
-    public PhotoItemDao setProfilePicture(String profilePicture) {
+    public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
-        return this;
     }
 
     public List<String> getTags() {
         return tags;
     }
 
-    public PhotoItemDao setTags(List<String> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
-        return this;
     }
 
     public Date getCreatedTime() {
         return createdTime;
     }
 
-    public PhotoItemDao setCreatedTime(Date createdTime) {
+    public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
-        return this;
     }
 
     public String getCamera() {
         return camera;
     }
 
-    public PhotoItemDao setCamera(String camera) {
+    public void setCamera(String camera) {
         this.camera = camera;
-        return this;
     }
 
     public String getLens() {
         return lens;
     }
 
-    public PhotoItemDao setLens(String lens) {
+    public void setLens(String lens) {
         this.lens = lens;
-        return this;
     }
 
     public String getFocalLength() {
         return focalLength;
     }
 
-    public PhotoItemDao setFocalLength(String focalLength) {
+    public void setFocalLength(String focalLength) {
         this.focalLength = focalLength;
-        return this;
     }
 
     public String getIso() {
         return iso;
     }
 
-    public PhotoItemDao setIso(String iso) {
+    public void setIso(String iso) {
         this.iso = iso;
-        return this;
     }
 
     public String getShutterSpeed() {
         return shutterSpeed;
     }
 
-    public PhotoItemDao setShutterSpeed(String shutterSpeed) {
+    public void setShutterSpeed(String shutterSpeed) {
         this.shutterSpeed = shutterSpeed;
-        return this;
     }
 
     public String getAperture() {
         return aperture;
     }
 
-    public PhotoItemDao setAperture(String aperture) {
+    public void setAperture(String aperture) {
         this.aperture = aperture;
-        return this;
     }
 }

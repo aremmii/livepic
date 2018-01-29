@@ -18,11 +18,11 @@ public class PhotoItemCollectionDao implements Parcelable {
     @SerializedName("data")
     private List<PhotoItemDao> data;
 
-    public PhotoItemCollectionDao(){
+    public  PhotoItemCollectionDao(){
 
     }
 
-    protected PhotoItemCollectionDao(Parcel in) {
+    private PhotoItemCollectionDao(Parcel in) {
         success = in.readByte() != 0;
         data = in.createTypedArrayList(PhotoItemDao.CREATOR);
     }
@@ -54,17 +54,15 @@ public class PhotoItemCollectionDao implements Parcelable {
         return success;
     }
 
-    public PhotoItemCollectionDao setSuccess(boolean success) {
+    public void setSuccess(boolean success) {
         this.success = success;
-        return this;
     }
 
     public List<PhotoItemDao> getData() {
         return data;
     }
 
-    public PhotoItemCollectionDao setData(List<PhotoItemDao> data) {
+    public void setData(List<PhotoItemDao> data) {
         this.data = data;
-        return this;
     }
 }

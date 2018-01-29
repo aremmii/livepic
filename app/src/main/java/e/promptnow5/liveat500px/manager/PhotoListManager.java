@@ -22,8 +22,6 @@ public class PhotoListManager {
     private Context mContext;
     private PhotoItemCollectionDao dao;
 
-    int maxId, minId;
-
     public PhotoListManager() {
         mContext = Contextor.getInstance().getContext();
         // Load data from Persistent Storage
@@ -36,8 +34,6 @@ public class PhotoListManager {
 
     public void setDao(PhotoItemCollectionDao dao) {
         this.dao = dao;
-        //Save to Persistent Storage
-//        saveCache();
     }
 
     public void insertDaoAtTopPosition(PhotoItemCollectionDao newDao) {
@@ -45,7 +41,6 @@ public class PhotoListManager {
             dao = new PhotoItemCollectionDao();
         if (dao.getData() == null)
             dao.setData(new ArrayList<PhotoItemDao>());
-
         dao.getData().addAll(0, newDao.getData());
 //        saveCache();
     }
@@ -55,7 +50,6 @@ public class PhotoListManager {
             dao = new PhotoItemCollectionDao();
         if (dao.getData() == null)
             dao.setData(new ArrayList<PhotoItemDao>());
-
         dao.getData().addAll(dao.getData().size(), newDao.getData());
 //        saveCache();
     }
@@ -68,9 +62,9 @@ public class PhotoListManager {
         if (dao.getData().size() == 0)
             return 0;
 
-        for (int i = 1; i < dao.getData().size(); i++) {
+        int maxId = dao.getData().get(0).getId();
+        for (int i = 1; i < dao.getData().size(); i++)
             maxId = Math.max(maxId, dao.getData().get(i).getId());
-        }
         return maxId;
     }
 
@@ -82,6 +76,7 @@ public class PhotoListManager {
         if (dao.getData().size() == 0)
             return 0;
 
+        int minId = dao.getData().get(0).getId();
         for (int i = 1; i < dao.getData().size(); i++)
             minId = Math.min(minId, dao.getData().get(i).getId());
         return minId;
@@ -92,7 +87,6 @@ public class PhotoListManager {
             return 0;
         if (dao.getData() == null)
             return 0;
-
         return dao.getData().size();
     }
 

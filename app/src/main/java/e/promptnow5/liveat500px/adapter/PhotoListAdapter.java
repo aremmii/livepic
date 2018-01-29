@@ -63,13 +63,13 @@ public class PhotoListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (position == getCount() - 1) {
-            ProgressBar i;
+            ProgressBar item;
             if (convertView != null) {
-                i = (ProgressBar) convertView;
+                item = (ProgressBar) convertView;
             } else {
-                i = new ProgressBar(parent.getContext());
+                item = new ProgressBar(parent.getContext());
             }
-            return i;
+            return item;
         }
 
         PhotoListItem item;
@@ -92,12 +92,10 @@ public class PhotoListAdapter extends BaseAdapter {
             item.startAnimation(anim);
             lastPositionInteger.setValue(position);
         }
-
         return item;
     }
 
     public void increaseLastPosition(int amount) {
         lastPositionInteger.setValue(lastPositionInteger.getValue() + amount);
     }
-
 }

@@ -117,10 +117,8 @@ public class MainFragment extends Fragment {
 
         // Init 'View' instance(s) with rootView.findViewById here
         listView = (ListView) rootView.findViewById(R.id.listView);
-
         listAdapter = new PhotoListAdapter(lastPositionInteger);
         listAdapter.setDao(photoListManager.getDao());
-
         listView.setAdapter(listAdapter);
         listView.setOnItemClickListener(listViewItemClickListener);
 
@@ -129,10 +127,8 @@ public class MainFragment extends Fragment {
 
         listView.setOnScrollListener(onScrollListener);
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null)
             refreshData();
-        }
-
     }
 
     private void refreshData() {
@@ -242,9 +238,6 @@ public class MainFragment extends Fragment {
                              int visibleItemCount,
                              int totalItemCount) {
             if (view == listView) {
-                if (listView.getFirstVisiblePosition() == 0) {
-                    hideButtonNewPhoto();
-                }
                 swipeRefreshLayout.setEnabled(firstVisibleItem == 0);
                 if (firstVisibleItem + visibleItemCount >= totalItemCount) {
                     if (photoListManager.getCount() > 0) {
@@ -286,7 +279,7 @@ public class MainFragment extends Fragment {
 
         int mode;
 
-        private PhotoListLoadCallback(int mode) {
+        public PhotoListLoadCallback(int mode) {
             this.mode = mode;
         }
 
@@ -295,41 +288,37 @@ public class MainFragment extends Fragment {
             swipeRefreshLayout.setRefreshing(false);
             if (response.isSuccessful()) {
                 PhotoItemCollectionDao dao = response.body();
-                int firstVisblePosition = listView.getFirstVisiblePosition();
+
+                int firstVisiblePosition = listView.getFirstVisiblePosition();
                 View c = listView.getChildAt(0);
                 int top = c == null ? 0 : c.getTop();
 
                 if (mode == MODE_RELOAD_NEWER) {
-                    photoListManager.insertDaoAtTopPosition(photoListManager.getDao());
+                    photoListManager.insertDaoAtTopPosition(dao);
                 } else if (mode == MODE_LOAD_MORE) {
-                    photoListManager.appendDaoAtBottomPosition(photoListManager.getDao());
+                    photoListManager.appendDaoAtBottomPosition(dao);
                 } else {
                     photoListManager.setDao(dao);
                 }
                 clearLoadMoreFlagIfCapable(mode);
-                showToast("Load Completed");
                 listAdapter.setDao(photoListManager.getDao());
                 listAdapter.notifyDataSetChanged();
 
                 if (mode == MODE_RELOAD_NEWER) {
                     //Maintain Scroll Position
-                    int additionalSize;
-                    if (dao != null && dao.getData() != null) {
-                        additionalSize = dao.getData().size();
-                    } else {
-                        additionalSize = 0;
-                    }
+                    int additionalSize = (dao != null && dao.getData() != null) ? dao.getData().size() : 0;
                     listAdapter.increaseLastPosition(additionalSize);
-                    listView.setSelectionFromTop(firstVisblePosition + additionalSize,
+                    listView.setSelectionFromTop(firstVisiblePosition + additionalSize,
                             top);
                     if (additionalSize > 0)
                         showButtonNewPhoto();
+                } else {
+
                 }
 
                 showToast("Load Completed");
 
             } else {
-//                swipeRefreshLayout.setRefreshing(false);
                 clearLoadMoreFlagIfCapable(mode);
                 try {
                     showToast(response.errorBody().string());
@@ -341,8 +330,8 @@ public class MainFragment extends Fragment {
 
         @Override
         public void onFailure(Call<PhotoItemCollectionDao> call, Throwable t) {
-            swipeRefreshLayout.setRefreshing(false);
             clearLoadMoreFlagIfCapable(mode);
+            swipeRefreshLayout.setRefreshing(false);
             showToast(t.toString());
         }
 
